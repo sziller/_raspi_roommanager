@@ -78,7 +78,7 @@ Small projects of mine such as this one; can be run four ways:
   * Desktop icon in /DesktopLauncher
 
 === contact
-- Stuck?
+-- Stuck?
 
 contact::
 - szillerke@gmail.com
