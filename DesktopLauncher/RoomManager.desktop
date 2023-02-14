@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=RoomManager
+Type=Application
+Encoding=UTF-8
+Comment=Room managing app
+Icon=/home/pi/python_projects/_raspi_roommanager/icons/berries.jpg
+Exec=python3 /home/pi/python_projects/_raspi_roommanager/App_RoomManager.py
+Terminal=true
