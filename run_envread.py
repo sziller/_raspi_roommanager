@@ -5,6 +5,7 @@ def run(**kwargs):
     print(" - EnvironmentalReadings     === start ===")
     env = SHSe.EnvironmentalReadings()
     env.sense.low_light = True
+    env.sense.set_rotation(0)
     env.show_actual_data(**kwargs)
     print(" - EnvironmentalReadings     === ended ===")
 

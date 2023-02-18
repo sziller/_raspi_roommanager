@@ -5,6 +5,7 @@ def run(**kwargs):
     print(" - LedDisplay                === start ===")
     disp = SHLD.LedDisplay()
     disp.sense.low_light = True
+    disp.sense.set_rotation(0)
     disp.run(**kwargs)
     print(" - LedDisplay                === ended ===")
 
