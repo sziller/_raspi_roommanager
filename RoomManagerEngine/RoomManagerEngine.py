@@ -29,7 +29,9 @@ class RoomManager:
         else:
             self.schedule = schedule
         
-
+        for _ in self.schedule:
+            print(_)
+        
     def initiate(self):
         if not self.finite_looping:
             current_loop_count = 0
