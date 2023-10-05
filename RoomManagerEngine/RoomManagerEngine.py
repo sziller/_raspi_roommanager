@@ -12,7 +12,7 @@ class RoomManager:
                  rotation: int = 0):
         self.finite_looping: int            = finite_looping  # 1- any int: actual int;
         self.low_light: bool                = low_light
-        self.rotaton: int                   = rotation
+        self.rotation: int                  = rotation
         if not time_shift:
             self.time_shift = {'delta_t_h': -1, 'delta_t_m': 0}
         else:
@@ -38,28 +38,30 @@ class RoomManager:
         else:
             current_loop_count = 1
         while current_loop_count <= self.finite_looping:
+            print(self.finite_looping)
             for module in self.schedule:
+                print(module)
                 module['kwargs'].update(self.time_shift)
-                module['function'](**module['kwargs'])
+                getattr(self, module['function'])(**module['kwargs'])
             if self.finite_looping: current_loop_count += 1
 
 
     def run_led_display(self, **kwargs):
         print(" - LedDisplay                === start ===")
-        disp = SHLD.LedDisplay()
+        disp = SHLD.LedDisplay(**kwargs)
         disp.sense.low_light = self.low_light
-        disp.sense.set_rotation(self.rotaton)
-        disp.run(**kwargs)
+        disp.sense.set_rotation(self.rotation)
+        disp.run()
         print(" - LedDisplay                === ended ===")
 
 
     def run_led_clock(self, **kwargs):
         print(" - LedClock                  === start ===")
-        clock = SHLC.LedClock()
+        clock = SHLC.LedClock(**kwargs)
         clock.sense.low_light = self.low_light
-        clock.sense.set_rotation(self.rotaton)
+        clock.sense.set_rotation(self.rotation)
         clock.clock_style = 0
-        clock.run(**kwargs)
+        clock.run()
         print(" - LedClock                  === ended ===")
 
 
@@ -67,6 +69,8 @@ class RoomManager:
         print(" - EnvironmentalReadings     === start ===")
         env = SHSe.EnvironmentalReadings()
         env.sense.low_light = self.low_light
-        env.sense.set_rotation(self.rotaton)
+        env.sense.set_rotation(self.rotation)
         env.show_actual_data(**kwargs)
         print(" - EnvironmentalReadings     === ended ===")
+    
+    
