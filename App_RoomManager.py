@@ -26,5 +26,9 @@ if __name__ == "__main__":
     _time_shift = \
         {}
         # {'delta_t_h': -1, 'delta_t_m': 0}
-    app_room_manager(finite_looping=1, schedule=_schedule, time_shift=_time_shift, low_light=False)
+    app_room_manager(finite_looping=20,
+                     schedule=_schedule,
+                     time_shift=_time_shift,
+                     low_light=False,
+                     session_name=".RoomManager.db")
 

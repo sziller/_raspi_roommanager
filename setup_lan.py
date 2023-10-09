@@ -14,18 +14,18 @@ python setup.py bdist_wheel
 
 NAME = "RaspiRoommanager"
 
-PROJECT_PATH = "Projects/"
+PROJECT_PATH = "/home/sziller/Projects/"
 GEN_PACKAGES_PATH = PROJECT_PATH + "001_GeneralAssistance/GeneralCoding/Python/general_package_development"
 HAT_PACKAGES_PATH = PROJECT_PATH + "900_Raspberry/_general_packages/SenseHat"
 
 INSTALL_REQUIRES = [
     "pytest",
     "sqlalchemy",
-    "sensehat_led_clock @ http://sziller.eu/{}/sensehat_led_clock/dist/sensehat_led_clock-0.0.0-py3-none-any.whl"
+    "sensehat_led_clock @ file://localhost/{}/sensehat_led_clock/dist/sensehat_led_clock-0.0.0-py3-none-any.whl"
     .format(HAT_PACKAGES_PATH),
-    "sensehat_led_display @ http://sziller.eu/{}/sensehat_led_display/dist/sensehat_led_display-0.0.0-py3-none-any.whl"
+    "sensehat_led_display @ file://localhost/{}/sensehat_led_display/dist/sensehat_led_display-0.0.0-py3-none-any.whl"
     .format(HAT_PACKAGES_PATH),
-    "sensehat_sensors @ http://sziller.eu/{}/sensehat_sensors/dist/sensehat_sensors-0.0.0-py3-none-any.whl"
+    "sensehat_sensors @ file://localhost/{}/sensehat_sensors/dist/sensehat_sensors-0.0.0-py3-none-any.whl"
     .format(HAT_PACKAGES_PATH)]
 
 # 'ExampleRepo @ git+ssh://git@github.com/example_org/ExampleRepo.git'
@@ -53,4 +53,3 @@ setup(
     install_requires=INSTALL_REQUIRES,
     dependency_links=[],  # if dependent on external projects
 )
-

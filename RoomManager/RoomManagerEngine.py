@@ -13,16 +13,20 @@ class RoomManagerEngine:
     def __init__(self,
                  finite_looping: int,
                  schedule: list,
+                 session_name: str = "",
+                 room_id: str = "room_01",
                  time_shift: dict or bool = False,
                  low_light: bool = True,
                  rotation: int = 0,
-                 session_in: object or None = None,
                  **kwargs):
+        self.room_id = room_id
         self.finite_looping: int            = finite_looping  # 1- any int: actual int;
         self.low_light: bool                = low_light
         self.rotation: int                  = rotation
-        self.session = session_in
-        self.session = db_session_server = DBAl.createSession(db_path="./.room_01.db")
+        if not session_name:
+            self.session_name = self.room_id
+        else: self.session_name = session_name
+        self.session = DBAl.createSession(db_path=self.session_name)
         if not time_shift:
             self.time_shift = {'delta_t_h': -1, 'delta_t_m': 0}
         else:
@@ -78,12 +82,33 @@ class RoomManagerEngine:
         env_toDB = SHSe.EnvironmentalReadings(**kwargs)
         read_out = env_toDB.return_data()
         print(read_out)
-        DBAl.ADD_rows_to_table(primary_key="measurement_hash", data_list=[{"measurement_hash": "aa11",
-                                                                           "measurement_locat": "TEST",
-                                                                           "measurement_value": 100,
-                                                                           "measurement_type": "test",
-                                                                           "measurement_dim": "celcius",
-                                                                           "timestamp": 100.11}], db_table="measurements",
+        print("++++++++++++++++++")
+        for _ in read_out:
+            print(_)
+        print("++++++++++++++++++")
+        datalist = [
+            {
+                "mea_loc": self.room_id,
+                "mea_type": "temperature",
+                "mea_dim": "c",
+                "mea_val": read_out["temperature"],
+                "mea_time": read_out["time"]},
+            {
+                "mea_loc": self.room_id,
+                "mea_type": "humidity",
+                "mea_dim": "%",
+                "mea_val": read_out["humidity"],
+                "mea_time": read_out["time"]},
+            {
+                "mea_loc": self.room_id,
+                "mea_type": "air_pressure",
+                "mea_dim": "bar",
+                "mea_val": read_out["air_pressure"],
+                "mea_time": read_out["time"]}
+        ]
+        DBAl.ADD_rows_to_table(primary_key="mea_hash",
+                               data_list=datalist,
+                               db_table="measurements",
                                session_in=self.session)
         print(" - WriteEnvironmentalReadings    === ended ===")
         return read_out

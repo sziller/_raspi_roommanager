@@ -1,57 +1,64 @@
-import inspect
+import time
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import create_engine, MetaData, Column, Float, Integer, String, JSON
 from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import sessionmaker
+
+from cryptography import HashFunctions as HaFu
 
 # from EngineProcesses import (HelperFunctions as HeFu,
 #                              HashFunctions as HaFu)
 
 Base = declarative_base()
 
+
 def createSession(db_path: str, base=Base):
     """=== Function name: createSession ================================================================================
     ============================================================================================== by Sziller ==="""
-    engine = create_engine('sqlite:///%s' % db_path, echo=False, poolclass=NullPool)
+    engine = create_engine('sqlite:///{}'.format(db_path), echo=False, poolclass=NullPool)
     base.metadata.create_all(bind=engine)
     Session = sessionmaker(bind=engine)
     return Session()
+
 
 class Measurement(Base):
     """=== Classname: Record(Base) =====================================================================================
     Class represents general record who's data is to be stored and processed by the DB
     ============================================================================================== by Sziller ==="""
     __tablename__   = "measurements"
-    measurement_hash: str       = Column("measurement_hash", String, primary_key=True)
-    measurement_type: str       = Column("measurement_type", String)
-    measurement_locat: str      = Column("measurement_locat", String)
-    measurement_value: float    = Column("measurement_value", Float)
-    measurement_dim: str        = Column("measurement_dim", String)
-    timestamp: float            = Column("timestamp", Float)
+    mea_hash: str         = Column("mea_hash", String, primary_key=True)
+    mea_type: str         = Column("mea_type", String)
+    mea_loc: str          = Column("mea_loc", String)
+    mea_val: float        = Column("mea_val", Float)
+    mea_dim: str          = Column("mea_dim", String)
+    mea_time: str         = Column("mea_time", String)
+    timestamp: float        = Column("timestamp", Float)
 
     def __init__(self,
-                 measurement_hash: str,
-                 measurement_type: str,
-                 measurement_locat: str,
-                 measurement_value: float,
-                 measurement_dim: str,
-                 timestamp: float
+                 mea_type: str,
+                 mea_loc: str,
+                 mea_val: float,
+                 mea_dim: str,
+                 mea_time: str,
+                 timestamp: float = 0.0
                  ):
 
-        self.measurement_hash: str       = measurement_hash
-        self.measurement_type: str       = measurement_type
-        self.measurement_locat: str      = measurement_locat
-        self.measurement_value: float    = measurement_value
-        self.measurement_dim: str        = measurement_dim
-        self.timestamp: float            = timestamp
-
-        self.generate_id_hash()
-
-        def generate_id_hash(self):
-            """Function adds a unique ID to the row"""
-            self.measurement_hash = HaFu.single_sha256_byte2byte(bytes(
-                "{}{}".format(self.task_name, self.style),
-                "utf-8")).hex()
+        self.mea_hash: str        = self.generate_id_hash()
+        self.mea_type: str        = mea_type
+        self.mea_loc: str         = mea_loc
+        self.mea_val: float       = mea_val
+        self.mea_dim: str         = mea_dim
+        self.mea_time: str        = mea_time
+        self.timestamp: float       = timestamp
+        if self.timestamp == 0.0:
+            self.timestamp = time.time()
+        self.mea_hash: str = self.generate_id_hash()
+        
+    def generate_id_hash(self):
+        """Function adds a unique ID to the row"""
+        return HaFu.single_sha256_byte2byte(bytes(
+            "{}{}".format(self.mea_type, self.timestamp),
+            "utf-8")).hex()[:16]
 
     def return_as_dict(self):
         """=== Method name: return_as_dict =============================================================================
@@ -70,8 +77,10 @@ class Measurement(Base):
         return cls(**d_in)
 
     def __repr__(self):
-        return "{:<33}:{:>35} - added: {}".format(self.hash_hxstr,
-                                                  self.email,
+        return "{:<16}-{:>12}: {:>6}{:<5}".format(self.mea_hash,
+                                                  self.mea_loc,
+                                                  self.mea_val,
+                                                  self.mea_dim,
                                                   self.timestamp)
 
 
