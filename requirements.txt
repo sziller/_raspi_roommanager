@@ -1,2 +1,4 @@
 sqlalchemy
 pytest
+python-dotenv
+pyaml               # needed - yaml file import

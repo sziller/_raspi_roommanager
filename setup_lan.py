@@ -21,6 +21,7 @@ HAT_PACKAGES_PATH = PROJECT_PATH + "900_Raspberry/_general_packages/SenseHat"
 INSTALL_REQUIRES = [
     "pytest",
     "sqlalchemy",
+    "python-dotenv",
     "sensehat_led_clock @ file://localhost/{}/sensehat_led_clock/dist/sensehat_led_clock-0.0.0-py3-none-any.whl"
     .format(HAT_PACKAGES_PATH),
     "sensehat_led_display @ file://localhost/{}/sensehat_led_display/dist/sensehat_led_display-0.0.0-py3-none-any.whl"
