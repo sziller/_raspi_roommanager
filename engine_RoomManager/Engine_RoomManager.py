@@ -28,6 +28,7 @@ class EngineRoomManager:
                  schedule: list,
                  finite_looping: int        = 20,
                  session_name: str          = "",
+                 session_style: str         = "SQLite",
                  room_id: str               = "room_01",
                  time_shift: (dict, bool)   = False,
                  low_light: bool            = True,
@@ -54,7 +55,8 @@ class EngineRoomManager:
         if not session_name:
             self.session_name = '.' + self.room_id + '.db'
         else: self.session_name = session_name
-        self.session = SQLi.createSession(db_path=self.session_name, tables=[SQLb.Measurement.__table__])
+        self.session_style = session_style
+        self.session = SQLi.createSession(db_path=self.session_name, tables=[SQLb.Measurement.__table__], style=self.session_style)
         if not time_shift:
             self.time_shift = {'delta_t_h': -1, 'delta_t_m': 0}
         else:

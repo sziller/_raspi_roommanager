@@ -1,6 +1,7 @@
 """=== App-interface to start RoomManager Application. =======================================
 ============================================================================ by Sziller ==="""
 
+import os
 from time_format import TimeFormat as TiFo
 from dotenv import load_dotenv
 import logging
@@ -30,6 +31,9 @@ if __name__ == "__main__":
     # READ BASIC SETTINGS                                                                   -   START   -
     # from .env:
     load_dotenv()
+    # DB settings:
+    db_fullname = os.getenv("DB_FULLNAME")
+    db_style = os.getenv("DB_STYLE") 
     # from config.py:
     # language settings:
     LNG                 = conf.LANGUAGE_CODE
@@ -48,8 +52,6 @@ if __name__ == "__main__":
     app_loop_n_times    = conf.APP_LOOP_N_TIMES
     app_is_low_light    = conf.APP_LOW_LIGHT
     app_time_shift      = conf.APP_TIME_SHIFT
-    # DB settings:
-    session_name        = conf.DB_SESSION_NAME
     # READ BASIC SETTINGS                                                                   -   ENDED   -
 
     # Setting up logger                                                                     -   START   -
@@ -71,5 +73,6 @@ if __name__ == "__main__":
                      schedule=app_schedule,
                      time_shift=app_time_shift,
                      low_light=app_is_low_light,
-                     session_name=session_name,
+                     session_name=db_fullname,
+                     session_style=db_style
                      )
