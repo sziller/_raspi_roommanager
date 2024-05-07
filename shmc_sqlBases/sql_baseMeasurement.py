@@ -4,7 +4,7 @@ by Sziller
 """
 
 # imports for general Base handling START                                                   -   START   -
-from sqlalchemy import Column, String, Float  # Integer, JSON
+from sqlalchemy import Column, Integer, String, JSON, Float
 from sqlalchemy.ext.declarative import declarative_base
 # imports for general Base handling ENDED                                                   -   ENDED   -
 
@@ -27,7 +27,7 @@ class Measurement(Base):
     mea_val: float = Column("mea_val", Float)
     mea_dim: str = Column("mea_dim", String)
     mea_time: str = Column("mea_time", String)
-    timestamp: float = Column("timestamp", Float)
+    timestamp: float = Column("timestamp", Integer)
 
     def __init__(self,
                  mea_type: str,
@@ -35,7 +35,7 @@ class Measurement(Base):
                  mea_val: float,
                  mea_dim: str,
                  mea_time: str,
-                 timestamp: float = 0.0
+                 timestamp: int = 0
                  ):
         self.mea_hash: str = self.generate_id_hash()
         self.mea_type: str = mea_type
@@ -44,7 +44,7 @@ class Measurement(Base):
         self.mea_dim: str = mea_dim
         self.mea_time: str = mea_time
         self.timestamp: float = timestamp
-        if self.timestamp == 0.0:
+        if self.timestamp == 0:
             self.timestamp = time.time()
         self.mea_hash: str = self.generate_id_hash()
 
@@ -76,5 +76,5 @@ class Measurement(Base):
                                                   self.mea_val,
                                                   self.mea_dim,
                                                   self.timestamp)
-    
+
 # CLASS definitions ENDED                                                                   -   ENDED   -

@@ -7,8 +7,8 @@ from SenseHatSensors import Class_SenseHatSensors as SHSe
 from SenseHatLedDisplay import Class_SenseHatLedDisplay as SHLD
 import logging
 
-from shmc_sqlPackage import SQL_interface as SQLi
-from shmc_sqlPackage import SQL_bases as SQLb
+from shmc_sqlAccess import SQL_interface as SQLi
+from shmc_sqlBases.sql_baseMeasurement import Measurement as sqlMeasurement
 
 # LOGGING                                                                                   logging - START -
 lg = logging.getLogger()
@@ -32,7 +32,7 @@ class EngineRoomManager:
                  room_id: str               = "room_01",
                  time_shift: (dict, bool)   = False,
                  low_light: bool            = True,
-                 rotation: int              = 0,
+                 rotation: int              = 180,
                  hcdd: (dict, None)         = None,
                  **kwargs):
         lg.info("INIT : {:>85} <<<".format(self.ccn))
@@ -56,16 +56,14 @@ class EngineRoomManager:
             self.session_name = '.' + self.room_id + '.db'
         else: self.session_name = session_name
         self.session_style = session_style
-        self.session = SQLi.createSession(db_path=self.session_name, tables=[SQLb.Measurement.__table__], style=self.session_style)
+        self.session = SQLi.createSession(db_fullname=self.session_name,
+                                          tables=[sqlMeasurement.__table__],
+                                          style=self.session_style)
         if not time_shift:
             self.time_shift = {'delta_t_h': -1, 'delta_t_m': 0}
         else:
             self.time_shift = time_shift
         self.schedule = schedule
-        # print("-------------------------------------------------------------------------------------------")
-        # print("Envtest1: {}".format(os.getenv("ENVDATA")))
-        # print("Envtest2: {}".format(os.getenv("TEST01")))
-        # print("-------------------------------------------------------------------------------------------")
         
         self.go()
         
@@ -158,7 +156,7 @@ class EngineRoomManager:
         ]
         SQLi.ADD_rows_to_table(primary_key="mea_hash",
                                data_list=datalist,
-                               row_obj=SQLb.Measurement,
+                               row_obj=sqlMeasurement,
                                session=self.session)
         lg.info(" - WriteEnvironmentalReadings    === ended ===")
         return read_out

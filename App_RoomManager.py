@@ -46,11 +46,13 @@ if __name__ == "__main__":
     log_ts              = "_{}".format(TiFo.timestamp()) if conf.LOG_TIMED else ""
     log_tf              = conf.LOG_TIMEFORMAT
     log_filename        = conf.LOG_FILENAME.format(root_path, log_ts)
+    # display settings:
+    dsp_is_low_light    = conf.DSP_LOW_LIGHT
+    dsp_rotate          = conf.DSP_ROTATE
     # app settings:
     app_id              = conf.APP_ID
     app_schedule        = conf.APP_SCHEDULE
     app_loop_n_times    = conf.APP_LOOP_N_TIMES
-    app_is_low_light    = conf.APP_LOW_LIGHT
     app_time_shift      = conf.APP_TIME_SHIFT
     # READ BASIC SETTINGS                                                                   -   ENDED   -
 
@@ -72,7 +74,8 @@ if __name__ == "__main__":
                      room_id=app_id,
                      schedule=app_schedule,
                      time_shift=app_time_shift,
-                     low_light=app_is_low_light,
+                     low_light=dsp_is_low_light,
+                     rotation=dsp_rotate,
                      session_name=db_fullname,
                      session_style=db_style
                      )

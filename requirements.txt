@@ -1,3 +1,4 @@
+# all latest packages in "lib/project-own"
 sqlalchemy
 pytest
 python-dotenv
