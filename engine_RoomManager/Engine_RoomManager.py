@@ -1,5 +1,4 @@
 import os
-import config as conf
 import inspect
 from dotenv import load_dotenv
 from SenseHatLedClock import Class_SenseHatLedClock as SHLC
@@ -43,7 +42,7 @@ class EngineRoomManager:
             "heartbeat": 20,
             "delta_t_h": 0,
             "delta_t_m": 0,  # TB-R: _dict is appropriate name
-            "err_msg_path": conf.PATH_ERROR_MSG}
+            "err_msg_path": "./"}
         if hcdd:  # if <hcdd> update is entered...
             self.hcdd_default.update(hcdd)  # updated the INSTANCE stored default!!!
         self.hcdd = self.hcdd_default
